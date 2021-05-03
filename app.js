@@ -1,7 +1,4 @@
 //we'll use these vars in more than one route, than is better call global here
-(NR_APP_NAME_PRODUCTION = ["Anota AI Production"]),
-    (NR_APP_NAME_STAGING = ["Anota AI Staging"]),
-    require("newrelic");
 config = require("./config/config.js");
 moment = require("moment-timezone");
 moment.tz.setDefault("America/Sao_Paulo");
@@ -10,28 +7,22 @@ mongoose = require("mongoose");
 ObjectIDForModel = mongoose.Schema.Types.ObjectId;
 ObjectId = mongoose.Types.ObjectId;
 //mongoose.Promise = require("q").Promise;
-jwt = require("jsonwebtoken");
-Promise = require("bluebird");
 const database = require("./db/db");
-socketIO = require("socket.io");
-var mongoAdapter = require("socket.io-adapter-mongo");
-mongoosePaginate = require("mongoose-paginate");
 //amazon = require("./routes/sources/amazon/amazon.js");
-multipart = require("connect-multiparty");
+/*multipart = require("connect-multiparty");
 multipartMiddleware = multipart({
     maxFilesSize: 1024 * 1024,
-});
+});*/
 
-Sentry = require("@sentry/node");
+//Sentry = require("@sentry/node");
 
-urlBase = process.env.URLBASE || config.urlBase;
+//urlBase = process.env.URLBASE || config.urlBase;
 
 
 var app = express();
-var cors = require("cors");
-var bodyParser = require("body-parser");
-var device = require("express-device");
+var bodyParser = require("body-parser")
 
+app.use(bodyParser.json());
 // tracking errors
 /*if (environment == "production") {
     Sentry.init({
@@ -47,30 +38,15 @@ var device = require("express-device");
 app.enable("trust proxy");
 
 //to get device bei
-app.use(
-    device.capture({
-        parseUserAgent: true,
-    })
-);
+
 // app.use(bodyParser.json()); // support json encoded bodies
-app.use(
-    bodyParser.json({
-        limit: "1mb",
-    })
-);
-app.use(
-    bodyParser.urlencoded({
-        limit: "1mb",
-        extended: true,
-    })
-); // support encoded bodies
-app.use(cors());
+
 
 app.use(express.static(__dirname + "/"));
 
 
 // all environments
-app.set("port", process.env.PORT || 8000);
+app.set("port", 8000);
 
 //to use render
 database
@@ -84,14 +60,10 @@ database
             });
             server.timeout = 45000;
 
-            io = socketIO(server, {
-                pingInterval: 15000,
-                pingTimeout: 30000,
-            });
-            io.adapter(mongoAdapter(config.db.socket));
+            
         }
 
-        queue = require("./routes/sources/amazon/queue");
+        //queue = require("./routes/sources/amazon/queue");
 
         app.use(function (req, res, next) {
             res.status(404);
@@ -116,7 +88,6 @@ database
     })
     .catch((e) => {
         console.log(e);
-        Sentry.captureException(e);
     });
 
 

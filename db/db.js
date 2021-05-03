@@ -1,11 +1,11 @@
 const config = require("../config/config");
 
-var urlDbAnotaAi = process.env.URLDB || config.urlBase;
+var urlDbAnotaAi = config.urlBase;
 
 console.log("VERSAO::" + mongoose.version);
 
 const connect = async () => {
-  anotaai = mongoose.createConnection(urlDbAnotaAi, {
+  anotaai = mongoose.connect(urlDbAnotaAi, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,

@@ -22,7 +22,7 @@ const {
 const registerProduct = (req, res) => {
   const product = req.body
   saveProduct(product).then(response => {
-    res.json(data)
+    res.json(response)
   });
   
 }
@@ -39,7 +39,7 @@ const editProduct = (req, res) => {
   const product = req.body
   
   setProduct(product).then(response => {
-    res.json(data)
+    res.json(response)
   });
 
 }
@@ -54,8 +54,12 @@ const editProduct = (req, res) => {
   */
 const listProduct = (req, res) => {
   
+  console.log("entrou")
   findProduct().then(response => {
-    res.json(data)
+    res.json(response)
+  })
+  .catch(erro => {
+    console.log(erro)
   });
 
 }
@@ -71,7 +75,7 @@ const listProduct = (req, res) => {
 const deleteProduct = (req, res) => {
   const id = req.param.id
   removeById(id).then(response => {
-    res.json(data)
+    res.json(response)
   })
 
 }
@@ -89,7 +93,7 @@ const listByTitleProduct = (req, res) => {
   const title = req.param.title
 
   findProductByTitle(title).then(response => {
-    res.json(data)
+    res.json(response)
   });
 
 }
